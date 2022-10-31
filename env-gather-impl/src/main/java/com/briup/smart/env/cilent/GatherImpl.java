@@ -51,7 +51,7 @@ public class GatherImpl implements Gather {
 
     private Timestamp getDate(String s) {
         String getDate = s;
-
+        return Timestamp.valueOf(getDate);
     }
 
 
