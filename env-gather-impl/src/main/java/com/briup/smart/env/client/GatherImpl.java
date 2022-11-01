@@ -1,4 +1,4 @@
-package com.briup.smart.env.cilent;
+package com.briup.smart.env.client;
 
 import com.briup.smart.env.client.Gather;
 import com.briup.smart.env.entity.Environment;
