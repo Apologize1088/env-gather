@@ -1,120 +1,111 @@
 package com.briup.smart.env.client;
 
-import com.briup.smart.env.client.Gather;
 import com.briup.smart.env.entity.Environment;
 
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class GatherImpl implements Gather {
+public class GatherImpl implements Gather{
+
     @Override
+    public Collection<Environment> gather()  {
+        //1.用IO流读取文件数据  用缓冲流bufferReader
+        String filePath="C://Users//Administrator//Desktop//data-file-simple";
+        ArrayList<Environment> list = new ArrayList<>();
 
-    public Collection<Environment> gather() throws Exception {
-        List<Environment> list = new ArrayList<>();
-        File file = new File("C:\\Users\\Administrator\\Desktop\\data-file-simple");
-        if (file==null){
-            return null;
-        }
-        BufferedReader br = null;
+        try(
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        ){
+            String str=null;
+            while ((str=bufferedReader.readLine())!=null){
+                //字符串分割操作 按|进行分割
+                String[] arr= str.split("[|]");
+                Environment environment = new Environment();
 
-        br = new BufferedReader(new FileReader(file));
-        String countent = null;
-        while ((countent = br.readLine())!=null){
-            String[] split = countent.split("\\|");
-            String[] names = getName(split[3]);
-            for (String name : names) {
-                Environment environment = processingData(name, split);
-                list.add(environment);
+                //环境种类名称
+                //   private String name;
+
+                //发送端id
+                environment.setSrcId(arr[0]);
+                //树莓派系统id
+                environment.setDesId(arr[2]);
+                //实验箱区域模块id(1-8)
+                environment.setDevId(arr[2]);
+                //模块上传感器地址
+                environment.setSersorAddress(arr[3]);
+                //传感器个数
+                environment.setCount(Integer.parseInt(arr[4]));
+                //发送指令标号 3表示接收数据 16表示发送命令
+                environment.setCmd(arr[5]);
+                //状态 默认1表示成功
+                environment.setStatus(Integer.parseInt(arr[7]));
+                //环境值
+                //   private float data;
+
+                //采集时间
+                environment.setGather_date(new Timestamp(Long.parseLong(arr[8])));
+                switch (arr[3]){
+                    case "16":
+                        //表示温度
+                        environment.setName("温度");
+                        String temprature = arr[6].substring(0, 4);
+                        int t = Integer.parseInt(temprature, 16);
+                        environment.setData((t*(0.00268127F))-46.85F);
+                        list.add(environment);
+
+                        //表示湿度
+                        Environment environment1=new Environment();
+                        //发送端id
+                        environment1.setSrcId(arr[0]);
+                        //树莓派系统id
+                        environment1.setDesId(arr[2]);
+                        //实验箱区域模块id(1-8)
+                        environment1.setDevId(arr[2]);
+                        //模块上传感器地址
+                        environment1.setSersorAddress(arr[3]);
+                        //传感器个数
+                        environment1.setCount(Integer.parseInt(arr[4]));
+                        //发送指令标号 3表示接收数据 16表示发送命令
+                        environment1.setCmd(arr[5]);
+                        //状态 默认1表示成功
+                        environment1.setStatus(Integer.parseInt(arr[7]));
+                        environment.setName("湿度");
+                        String temprature1 = arr[6].substring(4, 8);
+                        int t1= Integer.parseInt(temprature1, 16);
+                        environment1.setData((t1*0.00190735F)-6);
+                        list.add(environment1);
+                        break;
+                    case "256":
+                        environment.setName("光照强度");
+                        environment.setData(Integer.parseInt(arr[6].substring(0,4),16));
+                        list.add(environment);
+                        break;
+                    case "1280":
+                        environment.setName("二氧化碳");
+                        environment.setData(Integer.parseInt(arr[6].substring(0,4),16));
+                        list.add(environment);
+                        break;
+                    default:
+                        System.out.println("数据格式错误"+str);
+                        break;
+                }
+
+
+
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+
         }
-        br.close();
         return list;
     }
 
-    /**
-     * 处理数据
-     * @param name1
-     * @param split
-     * @return
-     */
-    private Environment processingData(String name1,String[] split){
-        String name = name1;
-        String srcId = split[0];
-        String desId = split[1];
-        String devId = split[2];
-        String sersorAddress = split[3];
-        int count = Integer.valueOf(split[4]);
-        String cmd = split[5];
-        int status  = Integer.valueOf(split[7]);
-        float data = getData(name,split[6]);
-        Timestamp gatherData = getDate(split[8]);
-        return new Environment(name,srcId,desId,devId,sersorAddress,count,cmd,status,data,gatherData);
-    }
-
-    /**
-     * 获取时间
-     * @param s
-     * @return
-     */
-    private Timestamp getDate(String s) {
-        long time = Long.valueOf(s);
-        return new Timestamp(time);
-    }
-
-
-    /**
-     * 环境数据处理
-     * @param name
-     * @param data
-     * @return
-     */
-    private float getData(String name,String data){
-        float concreteData = 0;
-        char[] dataChars = data.toCharArray();
-        if ("温度".equals(name)){
-            String temperature = new String(dataChars, 0, 4);
-            float i = Integer.parseInt(temperature,16);
-            concreteData = (i * (0.00268127F))-46.85F;
-        }
-        if ("湿度".equals(name)){
-            String humidity = new String(dataChars, dataChars.length/2-1, 4);
-            float i = Integer.parseInt(humidity,16);
-            concreteData = (i*0.00190735F)-6;
-
-        }
-        if ("光照强度".equals(name)){
-            String illumination = new String(dataChars, 0, 4);
-            concreteData = Integer.parseInt(illumination,16);
-
-        }
-        if ("二氧化碳".equals(name)){
-            String carbonDioxide  = new String(dataChars, 0, 4);
-            concreteData = Integer.parseInt(carbonDioxide,16);
-
-        }
-        return concreteData;
-    }
-
-    /**
-     * 获取环境名称
-     * @param addressOfSensor
-     * @return
-     */
-    private String[] getName(String addressOfSensor){
-        String[] name = null;
-        if ("16".equals(addressOfSensor)){
-            name = new String[]{"温度","湿度"};
-        }
-        if ("256".equals(addressOfSensor)){
-            name = new String[]{"光照强度"};
-        }
-        if ("1280".equals(addressOfSensor)){
-            name = new String[]{"二氧化碳"};
-        }
-        return name;
-    }
 }
