@@ -55,8 +55,8 @@
 
             <dependency>
                 <groupId>com.oracle</groupId>
-                <artifactId>ojdbc8</artifactId>
-                <version>${oralce.driver.version}</version>
+                <artifactId>ojdbc14</artifactId>
+                <version>14</version>
             </dependency>
 
             <dependency>

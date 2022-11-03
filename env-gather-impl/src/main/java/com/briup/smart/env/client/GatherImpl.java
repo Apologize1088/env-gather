@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-
 public class GatherImpl implements Gather{
 
     @Override
     public Collection<Environment> gather()  {
         //1.用IO流读取文件数据  用缓冲流bufferReader
-        String filePath="C://Users//Administrator//Desktop//data-file-simple";
+        String filePath="C://Users//Administrator//Desktop//data-file";
         ArrayList<Environment> list = new ArrayList<>();
 
         try(
@@ -75,7 +74,9 @@ public class GatherImpl implements Gather{
                         environment1.setCmd(arr[5]);
                         //状态 默认1表示成功
                         environment1.setStatus(Integer.parseInt(arr[7]));
-                        environment.setName("湿度");
+                        //采集时间
+                        environment1.setGather_date(new Timestamp(Long.parseLong(arr[8])));
+                        environment1.setName("湿度");
                         String temprature1 = arr[6].substring(4, 8);
                         int t1= Integer.parseInt(temprature1, 16);
                         environment1.setData((t1*0.00190735F)-6);
@@ -107,5 +108,4 @@ public class GatherImpl implements Gather{
         }
         return list;
     }
-
 }

@@ -9,7 +9,7 @@ public class ServerMain {
     public static void main(String[] args) throws Exception {
         ServerImpl server=new ServerImpl();
         server.receive();
+        //Thread.sleep(5000);
         //server.shutdown();
-
     }
 }
