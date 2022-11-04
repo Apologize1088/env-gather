@@ -3,12 +3,14 @@ package com.briup.smart.env.util;
 import java.io.*;
 
 public class BackupImpl implements Backup {
-
+    private Log log = new LogImpl();
     @Override
     public Object load(String fileName, boolean del) throws Exception {
         File file = new File(fileName);
         if (!file.exists()){
-            System.out.println("想要读取的备份文件不存在"+fileName);
+            //System.out.println("备份模块：想要读取的备份文件不存在"+fileName);
+            log.info("备份模块：想要读取的备份文件不存在"+fileName);
+            return null;
         }
         Object object = null;
         try(ObjectInputStream ois =
