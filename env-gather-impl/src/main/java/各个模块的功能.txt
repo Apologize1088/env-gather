@@ -1,0 +1,37 @@
+采集模块
+1.用IO流读取文件中的一行行数据
+2.解析拿到的数据，解析后，封装成Environment类的对象
+3.将所有Environment类的对象保存到集合中
+
+入库模块
+服务端接收到客户端发来的数据（Collection对象）之后，
+保存到数据库
+通过JDBC写入到数据库
+
+备份模块
+    为什么要有备份模块：
+        在入库的过程中，如果出现了异常导致程序终止
+        那么一部分数据入库成功，还有一部分数据入库失败
+1.将尚未插入到数据库的数据保存到文件中
+    使用store方法来保存数据到备份文件中
+    void store(String fileName,Object obj,boolean append)
+    fileName：备份文件的存储位置
+    obj：想要保存的数据
+    append：保存时追加还是覆盖
+
+结合异常处理机制
+事务（commit、rollback）
+
+2.读取备份文件，如果有数据，那么和本次入库要插入的数据一并插入进数据库
+    Object load(String fileName,boolean del)
+    fileName：备份文件的存储位置
+    del：读取备份文件后，是否删除备份文件
+
+如何使用log4j?
+1.导入依赖或jar包
+2.复制log4j的配置文件log4j.properties
+src/main/resources下
+3.复制测试类Log4JTest.java到Test类中
+使用log4j
+Logger rootLogger = Logger.getRootLogger();
+        rootLogger.debug("Hello");
