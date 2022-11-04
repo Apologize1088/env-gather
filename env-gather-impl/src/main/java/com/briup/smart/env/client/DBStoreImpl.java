@@ -5,6 +5,7 @@ import com.briup.smart.env.server.DBStore;
 import com.briup.smart.env.util.Backup;
 import com.briup.smart.env.util.BackupImpl;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +17,17 @@ public class DBStoreImpl implements DBStore {
     private String backupFliePath = "C://Users//Administrator//Desktop//data-file-simple.txt";
     @Override
     public void saveDB(Collection<Environment> c)throws Exception{
+        File file = new File(backupFliePath);
+        if (file.exists() && file.length() > 0){
+            Object obj = backup.load(backupFliePath,Backup.LOAD_REMOVE);
+            if (obj instanceof Collection){
+                Collection<Environment> col =
+                        (Collection<Environment>) obj;
+                c.addAll(col);
+                System.out.println("入库模块：备份文件中的数据量-" + col.size());
+                System.out.println("入库模块：本次入库的总数据量-" + c.size());
+            }
+        }
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection connection = null;
         int saveCount = 0;//保存数据的数据量
@@ -31,10 +43,10 @@ public class DBStoreImpl implements DBStore {
             PreparedStatement ps=null;
             //遍历集合
             for (Environment environment : c) {
-                testExpection++;
-                if (testExpection == 3){
-                    throw new RuntimeException("测试");
-                }
+//                testExpection++;
+//                if (testExpection == 3){
+//                    throw new RuntimeException("测试");
+//                }
                 //获取天数
                 Timestamp gather_date = environment.getGather_date();
                 Calendar calendar = Calendar.getInstance();
