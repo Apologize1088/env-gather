@@ -1,5 +1,3 @@
-package com.briup.smart.env.test;
-
 import com.briup.smart.env.server.ServerImpl;
 import org.junit.jupiter.api.Test;
 

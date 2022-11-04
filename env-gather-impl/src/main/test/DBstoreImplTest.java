@@ -1,5 +1,3 @@
-package com.briup.smart.env.test;
-
 import com.briup.smart.env.client.DBStoreImpl;
 import com.briup.smart.env.client.GatherImpl;
 import com.briup.smart.env.entity.Environment;
