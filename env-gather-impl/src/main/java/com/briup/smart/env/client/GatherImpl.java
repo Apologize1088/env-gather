@@ -15,7 +15,7 @@ public class GatherImpl implements Gather{
     @Override
     public Collection<Environment> gather()  {
         //1.用IO流读取文件数据  用缓冲流bufferReader
-        String filePath="C://Users//Administrator//Desktop//data-file";
+        String filePath="C://Users//Administrator//Desktop//data-file-simple";
         ArrayList<Environment> list = new ArrayList<>();
 
         try(
