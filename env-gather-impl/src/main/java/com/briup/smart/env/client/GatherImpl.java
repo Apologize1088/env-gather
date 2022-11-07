@@ -1,6 +1,10 @@
 package com.briup.smart.env.client;
 
+import com.briup.smart.env.Configuration;
 import com.briup.smart.env.entity.Environment;
+import com.briup.smart.env.support.ConfigurationAware;
+import com.briup.smart.env.support.PropertiesAware;
+import com.briup.smart.env.util.Log;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -10,12 +14,16 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-public class GatherImpl implements Gather{
+import java.util.Properties;
 
+public class GatherImpl implements Gather, ConfigurationAware, PropertiesAware {
+    private Log log;
+    private String filePath;//采集文件的路径
     @Override
     public Collection<Environment> gather()  {
         //1.用IO流读取文件数据  用缓冲流bufferReader
-        String filePath="C://Users//Administrator//Desktop//data-file-simple";
+        //String filePath="C://Users//Administrator//Desktop//data-file-simple";
+
         ArrayList<Environment> list = new ArrayList<>();
 
         try(
@@ -93,7 +101,7 @@ public class GatherImpl implements Gather{
                         list.add(environment);
                         break;
                     default:
-                        System.out.println("数据格式错误"+str);
+                        log.debug("数据格式错误"+str);
                         break;
                 }
 
@@ -107,5 +115,16 @@ public class GatherImpl implements Gather{
 
         }
         return list;
+    }
+
+    @Override
+    public void setConfiguration(Configuration configuration) throws Exception {
+        log = configuration.getLogger();
+    }
+
+    @Override
+    public void init(Properties properties) throws Exception {
+        //最终会从conf.xml中获取
+        filePath = properties.getProperty("gather-file-path");
     }
 }

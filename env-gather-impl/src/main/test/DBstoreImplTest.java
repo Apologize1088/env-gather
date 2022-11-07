@@ -1,4 +1,4 @@
-import com.briup.smart.env.client.DBStoreImpl;
+import com.briup.smart.env.server.DBStoreImpl;
 import com.briup.smart.env.client.GatherImpl;
 import com.briup.smart.env.entity.Environment;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,11 @@
-package com.briup.smart.env.client;
+package com.briup.smart.env.server;
 
 import com.briup.smart.env.entity.Environment;
 import com.briup.smart.env.server.DBStore;
 import com.briup.smart.env.util.Backup;
 import com.briup.smart.env.util.BackupImpl;
+import com.briup.smart.env.util.Log;
+import com.briup.smart.env.util.LogImpl;
 
 import java.io.File;
 import java.sql.*;
@@ -15,6 +17,7 @@ import java.util.List;
 public class DBStoreImpl implements DBStore {
     private Backup backup = new BackupImpl();
     private String backupFliePath = "C://Users//Administrator//Desktop//data-file-simple.txt";
+    private Log log = new LogImpl();
     @Override
     public void saveDB(Collection<Environment> c)throws Exception{
         File file = new File(backupFliePath);
@@ -24,8 +27,8 @@ public class DBStoreImpl implements DBStore {
                 Collection<Environment> col =
                         (Collection<Environment>) obj;
                 c.addAll(col);
-                System.out.println("入库模块：备份文件中的数据量-" + col.size());
-                System.out.println("入库模块：本次入库的总数据量-" + c.size());
+                log.debug("入库模块：备份文件中的数据量-" + col.size());
+                log.debug("入库模块：本次入库的总数据量-" + c.size());
             }
         }
         Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -93,7 +96,7 @@ public class DBStoreImpl implements DBStore {
             connection.commit();
             saveCount += count;
             ps.close();
-            System.out.println("入库模块写入数据完毕");
+            log.debug("入库模块写入数据完毕");
         }catch (Exception e){
             connection.rollback();//事务回滚
             //如果发生异常，储存未保存的数据库的数据到备份文件中
@@ -109,8 +112,8 @@ public class DBStoreImpl implements DBStore {
             if (connection != null){
                 connection.close();
             }
-            System.out.println("入库模块：已保存的数据"+saveCount);
-            System.out.println("入库模块：未保存的数据"+(c.size()-saveCount));
+            log.debug("入库模块：已保存的数据"+saveCount);
+            log.debug("入库模块：未保存的数据"+(c.size()-saveCount));
         }
     }
 

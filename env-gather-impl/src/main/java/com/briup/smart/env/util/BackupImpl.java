@@ -16,13 +16,13 @@ public class BackupImpl implements Backup {
         try(ObjectInputStream ois =
                 new ObjectInputStream(new FileInputStream(fileName))){
             object = ois.readObject();
-            System.out.println("备份模块：成功读取备份文件");
+            log.debug("备份模块：成功读取备份文件");
         }catch (Exception e){
             e.printStackTrace();
         }
         if (del){
             boolean delete = file.delete();
-            System.out.println("备份模块：文件"
+            log.debug("备份模块：文件"
                     +(delete?"删除成功":"删除失败"));
         }
         return object;
@@ -35,7 +35,7 @@ public class BackupImpl implements Backup {
                         new ObjectOutputStream(new FileOutputStream(fileName,append));
                 ){
             oos.writeObject(obj);
-            System.out.println("备份模块：数据已保存到备份文件中"+fileName);
+            log.debug("备份模块：数据已保存到备份文件中"+fileName);
         }catch (Exception e){
             e.printStackTrace();
         }
