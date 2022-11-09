@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<environment>
+	<gather class="com.briup.smart.env.client.GatherImpl">
+		<gather-file-path>E:\\briup 企业\\Emotional\\env-gather\\data-file-simple</gather-file-path>
+	</gather>
+	
+	<logger class="com.briup.smart.env.util.LogImpl">
+	</logger>
+	
+	<backup class="com.briup.smart.env.util.BackupImpl">
+	</backup>
+	 
+	<client class="com.briup.smart.env.client.ClientImpl">
+		<client-host>127.0.0.1</client-host>
+		<client-port>9999</client-port>
+	</client>
+	
+	<server class="com.briup.smart.env.server.ServerImpl">
+		<server-port>9999</server-port>
+	</server>
+
+	<dbStore class="com.briup.smart.env.server.DBStoreImpl">
+		<backup-file-path>E:\\briup 企业\\Emotional\\env-gather\\备份文件.txt</backup-file-path>
+		<driver>oracle.jdbc.driver.OracleDriver</driver>
+		<url>jdbc:oracle:thin:@127.0.0.1:1521:XE</url>
+		<username>briup</username>
+		<password>briup</password>
+	</dbStore>
+
+</environment>
