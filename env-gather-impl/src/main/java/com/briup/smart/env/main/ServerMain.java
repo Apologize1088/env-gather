@@ -1,5 +1,8 @@
 package com.briup.smart.env.main;
 
+import com.briup.smart.env.Configuration;
+import com.briup.smart.env.ConfigurationImpl;
+import com.briup.smart.env.server.Server;
 import com.briup.smart.env.server.ServerImpl;
 
 /**
@@ -7,9 +10,10 @@ import com.briup.smart.env.server.ServerImpl;
  */
 public class ServerMain {
     public static void main(String[] args) throws Exception {
-        ServerImpl server=new ServerImpl();
-        server.receive();
-        //Thread.sleep(5000);
-        //server.shutdown();
+        ConfigurationImpl instance=ConfigurationImpl.getINstance();
+        Server server=instance.getServer();
+        server.reciver();
+
+//        server.shutdown();
     }
 }

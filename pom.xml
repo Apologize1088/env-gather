@@ -21,7 +21,7 @@
         <env.gather.version>1.0-SNAPSHOT</env.gather.version>
         <junit.version>4.13</junit.version>
         <druid.version>1.2.6</druid.version>
-        <oralce.driver.version>8</oralce.driver.version>
+        <oralce.driver.version>14</oralce.driver.version>
         <dom4j.version>2.1.3</dom4j.version>
         <log4j.version>1.2.17</log4j.version>
     </properties>
@@ -56,7 +56,7 @@
             <dependency>
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc14</artifactId>
-                <version>14</version>
+                <version>${oralce.driver.version}</version>
             </dependency>
 
             <dependency>

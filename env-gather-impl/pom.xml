@@ -11,42 +11,28 @@
 
     <artifactId>env-gather-impl</artifactId>
 
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.briup.smart</groupId>
             <artifactId>env-gather-interface</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.briup.smart</groupId>
-            <artifactId>env-gather-entity</artifactId>
+            <artifactId>env-gather-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc14</artifactId>
-            <version>14</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>

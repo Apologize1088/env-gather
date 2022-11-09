@@ -3,7 +3,7 @@ package com.briup.smart.env.util;
 import org.apache.log4j.Logger;
 
 public class LogImpl implements Log{
-    private Logger logger = Logger.getRootLogger();
+    private Logger logger=Logger.getRootLogger();
     @Override
     public void debug(String message) {
         logger.debug(message);

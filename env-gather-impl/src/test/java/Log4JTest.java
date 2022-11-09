@@ -1,8 +1,7 @@
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.jupiter.api.Test;
-
+import org.junit.Test;
 
 public class Log4JTest {
 	//Logger logger = Logger.getLogger(Log4JTest.class);
